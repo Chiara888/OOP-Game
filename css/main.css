@@ -10,9 +10,13 @@ body {
     overflow: hidden;
 }
 
-/* add figure pic later */
 #player {
     background-color: aqua;
+    position: absolute;
+}
+
+.obstacle {
+    background-color: rgb(243, 236, 246);
     position: absolute;
 }
 
