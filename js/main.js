@@ -3,7 +3,7 @@ class Player {
         this.width = 4;
         this.height = 8;
         this.positionX = 50 - this.width/2;
-        this.positionY = 50;
+        this.positionY = 15;
 
         this.domElement = null;
         this.createDomElement();
@@ -32,15 +32,15 @@ class Player {
         this.domElement.style.left = this.positionX +"vw";
     }
 
-    moveForward () {
-        this.positionY++;
-        this.domElement.style.bottom = this.positionY +"vh"
-    }
+    // moveForward () {
+    //     this.positionY++;
+    //     this.domElement.style.bottom = this.positionY +"vh"
+    // }
 
-    moveBackwards () {
-        this.positionY--;
-        this.domElement.style.bottom = this.positionY +"vh"
-    }
+    // moveBackwards () {
+    //     this.positionY--;
+    //     this.domElement.style.bottom = this.positionY +"vh"
+    // }
 
     // shootObstacles () {
     // }
@@ -80,10 +80,41 @@ class Obstacle {
         this.domElement.style.bottom = this.randomPosition(20,98) + "vh";
     }
 }
+
+class Bullets {
+    constructor () {
+        this.width = 1;
+        this.height = 1;
+        this.positionX = 50;
+        this.positionY = 20; 
+        
+        this.domElement = null;
+        this.createDomElement();
+    }
+
+    createDomElement () {
+        this.domElement = document.createElement("div");
+
+        this.domElement.className = "bullets";
+        this.domElement.style.width = this.width + "vw";
+        this.domElement.style.height = this.height + "vh";
+        this.domElement.style.left = this.positionX + "vw";
+        this.domElement.style.bottom = this.positionY + "vh";
+
+        const parentElm = document.getElementById("board");
+        parentElm.appendChild(this.domElement);
+    }
+
+    shootBullet () {
+        this.positionY++;
+        this.domElement.style.bottom = this.positionY +"vh";
+    }
+}
  
 // Commands general 
 const player = new Player();
 const obstacleArr = [];
+const bulletsArr = [];
 
 
 // Commands for the player
@@ -99,15 +130,29 @@ document.addEventListener("keydown", (event) => {
     }
 })
 
-// Commands for the obstacles
 
+// Commands to shoot
+document.addEventListener("keydown", (event) => {
+    if (event.code === "Space") {
+        const createBullet = new Bullets();
+        bulletsArr.push(createBullet);
+        
+        setInterval(() => {
+            bulletsArr.forEach((bulletElm) => {
+            bulletElm.shootBullet();
+            },3000);
+        })
+    }
+})   
+
+
+// Commands for the obstacles
 setInterval(() => {
     const createObstacle = new Obstacle();
     obstacleArr.push(createObstacle);
     obstacleArr.forEach((obstacleElm) => {
         obstacleElm.appearRandom();
     })}, 4000); 
-
 
 setInterval(() => {
     const obstacleone = obstacleArr.shift();
