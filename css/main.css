@@ -4,24 +4,53 @@ body {
 }
 
 #board { 
-    background-color: #7731C8;
     height: 100vh;
     position: relative;
     overflow: hidden;
+    background-image: url("../pictures/bgfave.avif");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 #player {
-    background-color: aqua;
     position: absolute;
+    background-image: url("../pictures/player-elf.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    /* background-color: aqua; */
 }
 
 .obstacle {
-    background-color: rgb(239, 206, 255);
     position: absolute;
+    background-image: url("../pictures/obstacle-ghost.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 .bullets {
-    background-color: rgb(243, 236, 246);
     position: absolute;
+    background-image: url("../pictures/shoot-spark.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    /* background-color: rgb(243, 236, 246); */
+}
+
+p {
+    font-style: italic;
+    font-weight: bold;
+    color: aqua;
+}
+
+#score {
+
+}
+
+span {
+    /* margin: 60%;
+    padding: 60%; */
 }
 
