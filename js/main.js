@@ -1,3 +1,133 @@
+class Game {
+    constructor() {
+        this.player = null
+        this.obstacleArr = [];
+        this.bulletsArr = [];  
+    }
+
+    startGame() {
+        this.player = new Player();
+        this.createEventListeners();
+
+        // Commands for obstacles (appear + disappear random)
+        setInterval(() => {
+            const createObstacle = new Obstacle();
+            this.obstacleArr.push(createObstacle);
+            this.obstacleArr.forEach((obstacleElm) => {
+                obstacleElm.appearRandom();
+            })
+        }, 4000);
+
+        setInterval(() => {
+            if (this.obstacleArr.length > 0) {
+                console.log(this.obstacleArr);
+                this.obstacleArr[0].domElement.remove();
+                this.obstacleArr.shift();
+            }
+        }, 5000);
+
+        // Commands for collision of obstacle & bullet after shooting 
+        setInterval(() => {
+            this.bulletsArr.forEach((bulletElm, bulletIndex) => {
+                bulletElm.shootBullet();
+                this.obstacleArr.forEach((obstacleElm, obstacleIndex) => {
+                    this.detectCollision(bulletElm, bulletIndex, obstacleElm, obstacleIndex);
+                    this.removeObstacleOutsideBoard(bulletElm, bulletIndex);
+                })
+            });
+        }, 10);
+    };
+    
+    createEventListeners() {
+        // Commands for the player
+        document.addEventListener("keydown", (event) => {
+            if (event.code === "ArrowLeft") {
+                this.player.moveLeft();
+            } else if (event.code === "ArrowRight") {
+                this.player.moveRight();
+            } else if (event.code === "ArrowDown") {
+                this.player.moveBackwards();
+            } else if (event.code === "ArrowUp") {
+                this.player.moveForward();
+            }
+        });
+
+        // Commands to shoot bullets
+        document.addEventListener("keydown", (event) => {
+            if (event.code === "Space") {
+                const createBullet = new Bullets(this.player.positionX);
+                this.bulletsArr.push(createBullet);
+            }
+        });
+    };
+
+    detectCollision(bulletElm, bulletIndex, obstacleElm, obstacleIndex) {
+        if (obstacleElm.positionX < bulletElm.positionX + bulletElm.width &&
+            obstacleElm.positionX + obstacleElm.width > bulletElm.positionX &&
+            obstacleElm.positionY < bulletElm.positionY + bulletElm.height &&
+            obstacleElm.height + obstacleElm.positionY > bulletElm.positionY) {
+
+            console.log('hidden obstacle!');
+
+            obstacleElm.domElement.remove();
+            this.obstacleArr.splice(obstacleIndex, 1);
+
+            bulletElm.domElement.remove();
+            this.bulletsArr.splice(bulletIndex, 1);
+
+            bulletElm.hitObstablesGetEnergy();
+        }
+    };
+
+    removeObstacleOutsideBoard (bulletElm, bulletIndex) {
+        if (bulletElm.positionY > 100 - bulletElm.height) {
+            bulletElm.domElement.remove();
+            this.bulletsArr.splice(bulletIndex, 1);
+            console.log('bullet gone')
+        }
+    }
+
+    
+class Timer {
+    constructor() {
+        this.timer = null
+        this.timeLeft = 30;
+    }
+    
+    // document.addEventListener("click", (event) => {
+    //     if (event.code === "onclick") {
+    //         this.startTimer()
+    //     }
+    // })
+
+    startTimer() {
+        this.timer = setInterval(updateTimer, 1000);
+        this.updateTimer();
+
+        // We don't want the to be able to restart the timer while it is running,
+        // so hide the button.
+        // $('#playAgainButton').hide();
+    };
+
+    updateTimer() {
+        this.timeLeft -= 1
+        if (this.timeLeft >= 0) {
+            document.getElementById("timer").innerText = this.timeLeft 
+        } else {
+            this.gameOver();
+        }
+    };
+
+    gameOver() {
+        clearInterval(this.timer);
+        const displayButtonStart = document.getElementById("startAgain");
+        if (displayButtonStart.style.display === '0') {
+            displayButtonStart.style.display = "block"
+        }
+        }
+}
+
+
 class Player {
     constructor() {
         this.width = 4;
@@ -11,7 +141,6 @@ class Player {
 
     createDomElement () {
         this.domElement = document.createElement("div");
-
         this.domElement.id = "player";
         this.domElement.style.width = this.width + "vw";
         this.domElement.style.height = this.height + "vh";
@@ -45,7 +174,7 @@ class Player {
 
 
 class Obstacle {
-    constructor () {
+    constructor() {
         this.width = 2;
         this.height = 6;
         this.positionX = 50 - this.width/2;
@@ -55,7 +184,7 @@ class Obstacle {
         this.createDomElement();
     }
 
-    createDomElement () {
+    createDomElement() {
         this.domElement = document.createElement("div");
 
         this.domElement.className = "obstacle";
@@ -63,18 +192,22 @@ class Obstacle {
         this.domElement.style.height = this.height + "vh";
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
+        this.domElement.style.position = 'absolute'
+
 
         const parentElm = document.getElementById("board");
         parentElm.appendChild(this.domElement);
     }
     
-    randomPosition (min, max) {
+    randomPosition(min, max) {
         return Math.floor(Math.random() * (max-min)+min); 
     }
 
-    appearRandom () {
-        this.domElement.style.left = this.randomPosition(20,98) + "vw";
-        this.domElement.style.bottom = this.randomPosition(20,98) + "vh";
+    appearRandom() {
+        this.positionX = this.randomPosition(20,98)
+        this.positionY = this.randomPosition(20,98)
+        this.domElement.style.left = this.positionX + "vw";
+        this.domElement.style.bottom = this.positionY + "vh";
     }
 }
 
@@ -90,7 +223,7 @@ class Bullets {
         this.createDomElement();
     }
 
-    createDomElement () {
+    createDomElement() {
         this.domElement = document.createElement("div");
 
         this.domElement.className = "bullets";
@@ -98,100 +231,25 @@ class Bullets {
         this.domElement.style.height = this.height + "vh";
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
+        this.domElement.style.position = 'absolute'
 
         const parentElm = document.getElementById("board");
         parentElm.appendChild(this.domElement);
     }
 
-    shootBullet () {
+    shootBullet() {
         this.positionY++;
         this.domElement.style.bottom = this.positionY +"vh";
     }
-
-    hitObstacles () {
-        this.getEnergy += 5;
-        document.getElementById("score").innerText = this.getEnergy;
+ 
+    hitObstablesGetEnergy() {
+        this.getEnergy += 1;
+        document.getElementById("score").innerText = Number(this.getEnergy);
     }
 }
  
-// Commands general 
-const player = new Player();
-const obstacleArr = [];
-const bulletsArr = [];
 
-
-// Commands for the player
-document.addEventListener("keydown", (event) => {
-    if (event.code === "ArrowLeft") {
-        player.moveLeft();
-    } else if (event.code === "ArrowRight") {
-        player.moveRight();
-    } else if (event.code === "ArrowDown") {
-        player.moveBackwards();
-    } else if (event.code === "ArrowUp") {
-        player.moveForward();
-    }
-})
-
-
-// Commands for the obstacles
-setInterval(() => {
-    const createObstacle = new Obstacle();
-    obstacleArr.push(createObstacle);
-    obstacleArr.forEach((obstacleElm) => {
-        obstacleElm.appearRandom();
-    })}, 4000); 
-
-setInterval(() => {
-    const obstacleone = obstacleArr.shift();
-    obstacleone.domElement.remove();
-}, 7000); 
-
-
-// Commands to shoot
-document.addEventListener("keydown", (event) => {
-    if (event.code === "Space") {
-        const createBullet = new Bullets(player.positionX);
-        bulletsArr.push(createBullet);
-    }
-})  
-
-
-// check if collision. if so, delete obstacle and bullet.
-setInterval(() => {
-    bulletsArr.forEach((bulletElm, bulletIndex) => {
-        bulletElm.shootBullet();
-        // this.COLLISION(bulletElm, index)
-
-        // collision{
-
-       // }
-        obstacleArr.forEach((obstacleElm, obstacleIndex) => {
-
-            if (obstacleElm.positionX < bulletElm.positionX + bulletElm.width &&
-                obstacleElm.positionX + obstacleElm.width > bulletElm.positionX &&
-                obstacleElm.positionY < bulletElm.positionY + bulletElm.height &&
-                obstacleElm.height + obstacleElm.positionY > bulletElm.positionY) {
-
-                console.log('hidden obstacle!');
-
-                obstacleElm.domElement.remove();
-                obstacleArr.splice(obstacleIndex, 1);
-
-                bulletElm.domElement.remove();
-                bulletsArr.splice(bulletIndex, 1);
-
-                bulletElm.hitObstacles();
-            }
-        });
-
-        if (bulletElm.positionY > 100 - bulletElm.height) {
-            bulletElm.domElement.remove();
-            bulletsArr.splice(bulletIndex, 1);
-            console.log('bullet gone')
-        }
-    });
-}, 10); 
-
+const letsStartGame = new Game();
+letsStartGame.startGame();
 
 
