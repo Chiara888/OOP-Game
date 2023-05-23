@@ -1,13 +1,17 @@
 class Game {
     constructor() {
-        this.player = null
+        this.player = null;
         this.obstacleArr = [];
-        this.bulletsArr = [];  
+        this.bulletsArr = [];
+
+        this.timeLeft = 30;
+        this.timer = null;
     }
 
     startGame() {
         this.player = new Player();
         this.createEventListeners();
+        this.startTimer();
 
         // Commands for obstacles (appear + disappear random)
         setInterval(() => {
@@ -16,7 +20,7 @@ class Game {
             this.obstacleArr.forEach((obstacleElm) => {
                 obstacleElm.appearRandom();
             })
-        }, 4000);
+        }, 3000); 
 
         setInterval(() => {
             if (this.obstacleArr.length > 0) {
@@ -24,7 +28,7 @@ class Game {
                 this.obstacleArr[0].domElement.remove();
                 this.obstacleArr.shift();
             }
-        }, 5000);
+        }, 6000);
 
         // Commands for collision of obstacle & bullet after shooting 
         setInterval(() => {
@@ -35,7 +39,7 @@ class Game {
                     this.removeObstacleOutsideBoard(bulletElm, bulletIndex);
                 })
             });
-        }, 10);
+        }, 5);
     };
     
     createEventListeners() {
@@ -61,6 +65,17 @@ class Game {
         });
     };
 
+    startTimer() {
+        this.timer = setInterval(() => {
+            this.timeLeft -= 1;
+            document.getElementById("timer").innerText = `Seconds left: ${this.timeLeft}`
+            if (this.timeLeft <= 0) {
+                location.href = './gameover.html';
+                clearInterval(this.timer); 
+            }
+        }, 1000); 
+    };  
+
     detectCollision(bulletElm, bulletIndex, obstacleElm, obstacleIndex) {
         if (obstacleElm.positionX < bulletElm.positionX + bulletElm.width &&
             obstacleElm.positionX + obstacleElm.width > bulletElm.positionX &&
@@ -68,14 +83,13 @@ class Game {
             obstacleElm.height + obstacleElm.positionY > bulletElm.positionY) {
 
             console.log('hidden obstacle!');
+            bulletElm.hitObstablesGetEnergy();
 
             obstacleElm.domElement.remove();
             this.obstacleArr.splice(obstacleIndex, 1);
 
             bulletElm.domElement.remove();
             this.bulletsArr.splice(bulletIndex, 1);
-
-            bulletElm.hitObstablesGetEnergy();
         }
     };
 
@@ -86,54 +100,15 @@ class Game {
             console.log('bullet gone')
         }
     }
-
-    
-class Timer {
-    constructor() {
-        this.timer = null
-        this.timeLeft = 30;
-    }
-    
-    // document.addEventListener("click", (event) => {
-    //     if (event.code === "onclick") {
-    //         this.startTimer()
-    //     }
-    // })
-
-    startTimer() {
-        this.timer = setInterval(updateTimer, 1000);
-        this.updateTimer();
-
-        // We don't want the to be able to restart the timer while it is running,
-        // so hide the button.
-        // $('#playAgainButton').hide();
-    };
-
-    updateTimer() {
-        this.timeLeft -= 1
-        if (this.timeLeft >= 0) {
-            document.getElementById("timer").innerText = this.timeLeft 
-        } else {
-            this.gameOver();
-        }
-    };
-
-    gameOver() {
-        clearInterval(this.timer);
-        const displayButtonStart = document.getElementById("startAgain");
-        if (displayButtonStart.style.display === '0') {
-            displayButtonStart.style.display = "block"
-        }
-        }
 }
 
 
 class Player {
     constructor() {
-        this.width = 4;
-        this.height = 10;
+        this.width = 60;
+        this.height = 60;
         this.positionX = 50 - this.width/2;
-        this.positionY = 15;
+        this.positionY = 5;
 
         this.domElement = null;
         this.createDomElement();
@@ -142,8 +117,8 @@ class Player {
     createDomElement () {
         this.domElement = document.createElement("div");
         this.domElement.id = "player";
-        this.domElement.style.width = this.width + "vw";
-        this.domElement.style.height = this.height + "vh";
+        this.domElement.style.width = this.width + "px";
+        this.domElement.style.height = this.height + "px";
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
 
@@ -161,22 +136,22 @@ class Player {
         this.domElement.style.left = this.positionX +"vw";
     }
 
-    // moveForward () {
-    //     this.positionY++;
-    //     this.domElement.style.bottom = this.positionY +"vh"
-    // }
-
-    // moveBackwards () {
-    //     this.positionY--;
-    //     this.domElement.style.bottom = this.positionY +"vh"
-    // }
+    moveForward () {
+        this.positionY++;
+        this.domElement.style.bottom = this.positionY +"vh"
+    }
+ 
+    moveBackwards () {
+        this.positionY--;
+        this.domElement.style.bottom = this.positionY +"vh"
+    }
 }
 
 
 class Obstacle {
     constructor() {
-        this.width = 2;
-        this.height = 6;
+        this.width = 30;
+        this.height = 30;
         this.positionX = 50 - this.width/2;
         this.positionY = 80;
 
@@ -188,8 +163,8 @@ class Obstacle {
         this.domElement = document.createElement("div");
 
         this.domElement.className = "obstacle";
-        this.domElement.style.width = this.width + "vw";
-        this.domElement.style.height = this.height + "vh";
+        this.domElement.style.width = this.width + "px";
+        this.domElement.style.height = this.height + "px";
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
         this.domElement.style.position = 'absolute'
@@ -204,8 +179,8 @@ class Obstacle {
     }
 
     appearRandom() {
-        this.positionX = this.randomPosition(20,98)
-        this.positionY = this.randomPosition(20,98)
+        this.positionX = this.randomPosition(10,98)
+        this.positionY = this.randomPosition(10,98)
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
     }
@@ -213,8 +188,8 @@ class Obstacle {
 
 class Bullets {
     constructor (positionX) { 
-        this.width = 5;
-        this.height = 5;
+        this.width = 40;
+        this.height = 40;
         this.positionX = positionX;
         this.positionY = 20; 
         this.getEnergy = 0;
@@ -227,8 +202,8 @@ class Bullets {
         this.domElement = document.createElement("div");
 
         this.domElement.className = "bullets";
-        this.domElement.style.width = this.width + "vw";
-        this.domElement.style.height = this.height + "vh";
+        this.domElement.style.width = this.width + "px";
+        this.domElement.style.height = this.height + "px";
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
         this.domElement.style.position = 'absolute'
@@ -243,8 +218,8 @@ class Bullets {
     }
  
     hitObstablesGetEnergy() {
-        this.getEnergy += 1;
-        document.getElementById("score").innerText = Number(this.getEnergy);
+        this.getEnergy += 5;
+        document.getElementById("energy-level").innerText = `Energy Level: ${this.getEnergy}/100`;
     }
 }
  

@@ -1,17 +1,36 @@
 body {
     margin: 0;
     padding: 0;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-image: url("../pictures/bgfave.avif");
 }
 
+h1 {
+    text-align: center;
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-style: italic;
+    font-weight: bold;
+    color: aqua;
+}
+
+
 #board { 
-    height: 100vh;
+    height: 80vh;
     position: relative;
     overflow: hidden;
     background-image: url("../pictures/bgfave.avif");
     background-repeat: no-repeat;
-    background-position: center;
     background-size: cover;
-
+    margin-top: 20px;
+    margin-left: 15%;
+    margin-right: 15%;
+    border: 1px solid #885fe1;
+    box-shadow: 10px 10px 20px #ad87ff;
+    border-radius: 15px;
 }
 
 #player {
@@ -37,21 +56,34 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    /* background-color: rgb(243, 236, 246); */
+}
+
+
+span {
+    color: aliceblue;
+    padding-left: 2%;
+    font-family:'Courier New', Courier, monospace;
+    font-weight: bold;
+    /* background-image: url("../pictures/paper.png"); */
 }
 
 p {
-    font-style: italic;
+    color: aliceblue;
+    text-align: center;    
+    font-family:'Courier New', Courier, monospace;
     font-weight: bold;
-    color: aqua;
 }
 
-/* #score {
-
-} 
-
-span {
-    margin: 60%;
-    padding: 60%;
+/* #start-button {
+    
 } */
 
+#start-Screen {
+    background-color: blueviolet;
+    text-align: center;
+}
+
+#remove-screen {
+    background-color: blueviolet;
+    text-align: center;
+}
