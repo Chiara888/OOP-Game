@@ -4,7 +4,7 @@ class Game {
         this.obstacleArr = [];
         this.bulletsArr = [];
 
-        this.timeLeft = 30;
+        this.timeLeft = 40;
         this.timer = null;
     }
 
@@ -20,7 +20,7 @@ class Game {
             this.obstacleArr.forEach((obstacleElm) => {
                 obstacleElm.appearRandom();
             })
-        }, 3000); 
+        }, 2000); 
 
         setInterval(() => {
             if (this.obstacleArr.length > 0) {
@@ -39,7 +39,7 @@ class Game {
                     this.removeObstacleOutsideBoard(bulletElm, bulletIndex);
                 })
             });
-        }, 5);
+        }, 10);
     };
     
     createEventListeners() {

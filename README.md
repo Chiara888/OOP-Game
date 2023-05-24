@@ -1,13 +1,16 @@
-# Whispertree Woods: Phantom Hunt
+# OOP Game | Whispertree Woods 🧚
 
-## OOP Game
-Ghosts apply randomly in the Whispertree Woods for a limited time (and different size). 
-Player needs to catch the soul of the ghosts by shooting with bubbles and collect as many soul energy level in a limited given time by hitting the ghosts.
+## About 
+Let's take a walk through the enchanting forest of the Whispertree Woods. The location is inspired by the magic of lights and energy of fireflys and bioluminiscene. Since this natural spectacle gives off a lot of energy in real life, today you experience this natural wonder virtually. You'll embark the magical woods as a fairy in search of energy.
+
+## Gameplay
+As the fairy, you will float through the mystical Whispertree Woods to get back your energy within 40 seconds. Equipped with a lamp, you need to shoot the randomly appearing souls with the light of your lamp to collect and inhale their energy. The game relies on collision which means that if your lightnig-shoot collides with a soul, this will be counted by +5% on your energy level. If you touch a soul, your energy level decreases by 10%.
+
+If your energy level or the time is equal 0, the game is over. You can restart a new game by clicking the button.
+
+## Controls
+- Keyboard: Use your arrow keys to move the fairy in all directions.
+- Spacebar: Click to light up souls with your lamp and inhale their energy to increase your own.
 
 
-## How to play
-Collect points to get a high energy level of your soul.
-
-Bonus:
-Different enemies different amount of points (the smaller the more amount of points)
-Player is getting brighter the more enemies the player hits.
+⚡👻👻👻 Let's hunt for energy! >>LINK<< 👻👻👻⚡
