@@ -29,18 +29,25 @@ class Game {
                 this.obstacleArr[0].domElement.remove();
                 this.obstacleArr.shift();
             }
-        }, 6000);
+        }, 8000);
 
         // Commands for collision of obstacle & bullet after shooting 
         setInterval(() => {
             this.bulletsArr.forEach((bulletElm, bulletIndex) => {
                 bulletElm.shootBullet();
                 this.obstacleArr.forEach((obstacleElm, obstacleIndex) => {
+                    this.detectCollisionPlayer(obstacleElm);
                     this.detectCollision(bulletElm, bulletIndex, obstacleElm, obstacleIndex);
                     this.removeObstacleOutsideBoard(bulletElm, bulletIndex);
                 })
             });
         }, 10);
+
+        setInterval(() => {
+            this.obstacleArr.forEach((obstacleElm) => {
+                this.detectCollisionPlayer(obstacleElm);
+            })
+        },500);
     };
     
     createEventListeners() {
@@ -78,6 +85,18 @@ class Game {
         }, 1000); 
     };  
 
+    detectCollisionPlayer(obstacleElm) {
+        if (obstacleElm.positionX < this.player.positionX + this.player.width &&
+            obstacleElm.positionX + obstacleElm.width > this.player.positionX &&
+            obstacleElm.positionY < this.player.positionY + this.player.height &&
+            obstacleElm.height + obstacleElm.positionY > this.player.positionY) {
+
+            console.log('hidden player!');
+            this.getEnergy -= 5;
+            document.getElementById("energy-level").innerText = `Energy Level: ${this.getEnergy}/100`;
+        }
+    };
+
     detectCollision(bulletElm, bulletIndex, obstacleElm, obstacleIndex) {
         if (obstacleElm.positionX < bulletElm.positionX + bulletElm.width &&
             obstacleElm.positionX + obstacleElm.width > bulletElm.positionX &&
@@ -85,6 +104,7 @@ class Game {
             obstacleElm.height + obstacleElm.positionY > bulletElm.positionY) {
 
             console.log('hidden obstacle!');
+            
             this.getEnergy += 10;
             document.getElementById("energy-level").innerText = `Energy Level: ${this.getEnergy}/100`;
 
@@ -95,18 +115,6 @@ class Game {
             this.bulletsArr.splice(bulletIndex, 1);
         }
     };
-
-    // detectCollisionPlayer(obstacleElm) {
-    //     if (obstacleElm.positionX < this.player.positionX + this.player.width &&
-    //         obstacleElm.positionX + obstacleElm.width > this.player.positionX &&
-    //         obstacleElm.positionY < this.player.positionY + this.player.height &&
-    //         obstacleElm.height + obstacleElm.positionY > this.player.positionY) {
-
-    //         console.log('hidden player!');
-    //         this.getEnergy -= 5;
-    //         document.getElementById("energy-level").innerText = `Energy Level: ${this.getEnergy}/100`;
-    //     }
-    // };
 
     removeObstacleOutsideBoard (bulletElm, bulletIndex) {
         if (bulletElm.positionY > 100 - bulletElm.height) {
@@ -121,7 +129,7 @@ class Game {
 class Player {
     constructor() {
         this.width = 6
-        this.height = 6;
+        this.height = 12;
         this.positionX = 50 - this.width/2;
         this.positionY = 5;
 
@@ -142,22 +150,22 @@ class Player {
     }
 
     moveLeft () {
-        this.positionX--;
+        this.positionX-=3;
         this.domElement.style.left = this.positionX +"vw";
     }
 
     moveRight () {
-        this.positionX++;
+        this.positionX+=3;
         this.domElement.style.left = this.positionX +"vw";
     }
 
     moveForward () {
-        this.positionY++;
+        this.positionY+=3;
         this.domElement.style.bottom = this.positionY +"vh"
     }
  
     moveBackwards () {
-        this.positionY--;
+        this.positionY-=3;
         this.domElement.style.bottom = this.positionY +"vh"
     }
 }
@@ -165,8 +173,8 @@ class Player {
 
 class Obstacle {
     constructor() {
-        this.width = 6;
-        this.height = 6;
+        this.width = 4;
+        this.height = 7;
         this.positionX = 50 - this.width/2;
         this.positionY = 80;
 
