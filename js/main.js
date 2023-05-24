@@ -173,8 +173,8 @@ class Player {
 
 class Obstacle {
     constructor() {
-        this.width = 4;
-        this.height = 7;
+        this.width = 3.5;
+        this.height = 8;
         this.positionX = 50 - this.width/2;
         this.positionY = 80;
 

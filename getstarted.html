@@ -12,17 +12,19 @@
 
 <body>
     <div>
-        <h1 id="headline">Whispertree Woods</h1>
-    </div>     
-    <div id="start-Screen">
-        <p>Welcome to the mysterious forest area. <br>
-            Try to collect as many souls of the ghosts as you can to generate a higher energy level.</p>
-        <p><button id="start-button" onclick="window.location='./index.html';">Take me to the woods!</button></p>
+        <h1>Whispertree Woods</h1>
+    </div>
+    <div id="board">
+        <br>
+        <span id="energy-level">Energy level: 20 /100</span>
+        <br>
+        <span id="timer">Seconds left: 40</span>
     </div>
     <div>
-        <p></p>
+        <p id="instructions">Shoot = Spacebar | Move = Arrow keys | Don't touch the souls</p>
     </div>
 
+    <script src="./js/main.js"></script>
 </body>
 
 </html>

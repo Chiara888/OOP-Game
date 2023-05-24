@@ -30,7 +30,6 @@ p {
     text-align: center;    
     font-family:'Courier New', Courier, monospace;
     font-weight: bold;
-    animation: 
 }
 
 #board { 
@@ -76,20 +75,22 @@ p {
 
 #start-button {
     padding: 10px 25px;
-    font-size: 16px;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: bold;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
     outline: none;
-    color: #fff;
-    background-color: #a180f5;
+    color: #6713ab;
+    background-color:aqua;
     border: none;
     border-radius: 15px;
 }
 
 #start-button:hover {
     background-color: #dfaeff;
-    color: #ba31c4;
+    color: #6713ab;
 }
 
 #start-Screen {
@@ -109,7 +110,8 @@ p {
 }
 
 #instructions{
-    color: aqua;
+    color: #ad87ff;
+    font-weight: bold;
 }
 
 
