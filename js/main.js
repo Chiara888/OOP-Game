@@ -6,6 +6,7 @@ class Game {
 
         this.timeLeft = 40;
         this.timer = null;
+        this.getEnergy = 0;
     }
 
     startGame() {
@@ -59,7 +60,7 @@ class Game {
         // Commands to shoot bullets
         document.addEventListener("keydown", (event) => {
             if (event.code === "Space") {
-                const createBullet = new Bullets(this.player.positionX);
+                const createBullet = new Bullets(this.player.positionX, this.player.positionY);
                 this.bulletsArr.push(createBullet);
             }
         });
@@ -71,7 +72,8 @@ class Game {
             document.getElementById("timer").innerText = `Seconds left: ${this.timeLeft}`
             if (this.timeLeft <= 0) {
                 location.href = './gameover.html';
-                clearInterval(this.timer); 
+            } else if (this.getEnergy >= 100) {
+                location.href = './gamewon.html';
             }
         }, 1000); 
     };  
@@ -83,15 +85,28 @@ class Game {
             obstacleElm.height + obstacleElm.positionY > bulletElm.positionY) {
 
             console.log('hidden obstacle!');
-            bulletElm.hitObstablesGetEnergy();
+            this.getEnergy += 10;
+            document.getElementById("energy-level").innerText = `Energy Level: ${this.getEnergy}/100`;
 
             obstacleElm.domElement.remove();
             this.obstacleArr.splice(obstacleIndex, 1);
-
+            
             bulletElm.domElement.remove();
             this.bulletsArr.splice(bulletIndex, 1);
         }
     };
+
+    // detectCollisionPlayer(obstacleElm) {
+    //     if (obstacleElm.positionX < this.player.positionX + this.player.width &&
+    //         obstacleElm.positionX + obstacleElm.width > this.player.positionX &&
+    //         obstacleElm.positionY < this.player.positionY + this.player.height &&
+    //         obstacleElm.height + obstacleElm.positionY > this.player.positionY) {
+
+    //         console.log('hidden player!');
+    //         this.getEnergy -= 5;
+    //         document.getElementById("energy-level").innerText = `Energy Level: ${this.getEnergy}/100`;
+    //     }
+    // };
 
     removeObstacleOutsideBoard (bulletElm, bulletIndex) {
         if (bulletElm.positionY > 100 - bulletElm.height) {
@@ -105,8 +120,8 @@ class Game {
 
 class Player {
     constructor() {
-        this.width = 60;
-        this.height = 60;
+        this.width = 6
+        this.height = 6;
         this.positionX = 50 - this.width/2;
         this.positionY = 5;
 
@@ -117,8 +132,8 @@ class Player {
     createDomElement () {
         this.domElement = document.createElement("div");
         this.domElement.id = "player";
-        this.domElement.style.width = this.width + "px";
-        this.domElement.style.height = this.height + "px";
+        this.domElement.style.width = this.width + "vw";
+        this.domElement.style.height = this.height + "vh";
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
 
@@ -150,8 +165,8 @@ class Player {
 
 class Obstacle {
     constructor() {
-        this.width = 30;
-        this.height = 30;
+        this.width = 6;
+        this.height = 6;
         this.positionX = 50 - this.width/2;
         this.positionY = 80;
 
@@ -163,8 +178,8 @@ class Obstacle {
         this.domElement = document.createElement("div");
 
         this.domElement.className = "obstacle";
-        this.domElement.style.width = this.width + "px";
-        this.domElement.style.height = this.height + "px";
+        this.domElement.style.width = this.width + "vw";
+        this.domElement.style.height = this.height + "vh";
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
         this.domElement.style.position = 'absolute'
@@ -187,12 +202,11 @@ class Obstacle {
 }
 
 class Bullets {
-    constructor (positionX) { 
-        this.width = 40;
-        this.height = 40;
+    constructor (positionX, positionY) { 
+        this.width = 3;
+        this.height = 3 ;
         this.positionX = positionX;
-        this.positionY = 20; 
-        this.getEnergy = 0;
+        this.positionY = positionY; 
         
         this.domElement = null;
         this.createDomElement();
@@ -202,8 +216,8 @@ class Bullets {
         this.domElement = document.createElement("div");
 
         this.domElement.className = "bullets";
-        this.domElement.style.width = this.width + "px";
-        this.domElement.style.height = this.height + "px";
+        this.domElement.style.width = this.width + "vw";
+        this.domElement.style.height = this.height + "vh";
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
         this.domElement.style.position = 'absolute'
@@ -215,11 +229,6 @@ class Bullets {
     shootBullet() {
         this.positionY++;
         this.domElement.style.bottom = this.positionY +"vh";
-    }
- 
-    hitObstablesGetEnergy() {
-        this.getEnergy += 5;
-        document.getElementById("energy-level").innerText = `Energy Level: ${this.getEnergy}/100`;
     }
 }
  

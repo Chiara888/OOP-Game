@@ -1,4 +1,4 @@
-# OOP Game | Whispertree Woods 🧚
+# Whispertree Woods 🧚
 
 ## About 
 Let's take a walk through the enchanting forest of the Whispertree Woods. The location is inspired by the magic of lights and energy of fireflys and bioluminiscene. Since this natural spectacle gives off a lot of energy in real life, today you experience this natural wonder virtually. You'll embark the magical woods as a fairy in search of energy.
@@ -13,4 +13,4 @@ If your energy level or the time is equal 0, the game is over. You can restart a
 - Spacebar: Click to light up souls with your lamp and inhale their energy to increase your own.
 
 
-⚡👻👻👻 Let's hunt for energy! >>LINK<< 👻👻👻⚡
+⚡👻👻👻 [Let's hunt for energy!](https://chiara888.github.io/OOP-Game/) 👻👻👻⚡

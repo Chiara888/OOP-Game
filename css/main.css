@@ -39,12 +39,14 @@ h1 {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+
     /* background-color: aqua; */
 }
 
+
 .obstacle {
     position: absolute;
-    background-image: url("../pictures/obstacle-ghost.png");
+    background-image: url("../pictures/Ghost-cute.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -74,16 +76,38 @@ p {
     font-weight: bold;
 }
 
-/* #start-button {
-    
-} */
+#start-button {
+    padding: 10px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #a180f5;
+    border: none;
+    border-radius: 15px;
+}
+
+#start-button:hover {
+    background-color: #dfaeff;
+    color: #ba31c4;
+}
 
 #start-Screen {
     background-color: blueviolet;
     text-align: center;
+    height: 80vh;
+    position: relative;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: 20px;
+    margin-left: 15%;
+    margin-right: 15%;
+    border: 1px solid #885fe1;
+    box-shadow: 10px 10px 20px #ad87ff;
+    border-radius: 15px;
 }
 
-#remove-screen {
-    background-color: blueviolet;
-    text-align: center;
-}
+
