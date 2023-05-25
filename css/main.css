@@ -39,11 +39,11 @@ p {
     width: 80px;      
     background-position: center;
     background-size: cover;
-    animation: playerAnimate 0.3s infinite;
     font-size: 50px;
     margin-left: 40%;
     margin-top: 5%;
     margin-bottom: 5%;
+    animation: playerAnimate 0.3s infinite;
 }
 
 #board { 
@@ -60,6 +60,22 @@ p {
     box-shadow: 10px 10px 20px #ad87ff;
     border-radius: 15px;
 }
+
+#tryagain {
+    height: 80vh;
+    position: relative;
+    overflow: hidden;
+    background-image: url("../pictures/background-forest.avif");
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: 30px;
+    margin-left: 35%;
+    margin-right: 35%;
+    border: 1px solid #885fe1;
+    box-shadow: 10px 10px 20px #ad87ff;
+    border-radius: 15px;
+}
+
 
 #player {
     position: absolute;

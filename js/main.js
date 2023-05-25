@@ -6,7 +6,7 @@ class Game {
 
         this.timeLeft = 40;
         this.timer = null;
-        this.getEnergy = 0;
+        this.getEnergy = 20;
     }
 
     startGame() {
@@ -21,7 +21,7 @@ class Game {
             this.obstacleArr.forEach((obstacleElm) => {
                 obstacleElm.appearRandom();
             })
-        }, 2000); 
+        }, 2000);
 
         setInterval(() => {
             if (this.obstacleArr.length > 0) {
@@ -36,7 +36,7 @@ class Game {
             this.bulletsArr.forEach((bulletElm, bulletIndex) => {
                 bulletElm.shootBullet();
                 this.obstacleArr.forEach((obstacleElm, obstacleIndex) => {
-                    this.detectCollisionPlayer(obstacleElm);
+                    // this.detectCollisionPlayer(obstacleElm, obstacleIndex);
                     this.detectCollision(bulletElm, bulletIndex, obstacleElm, obstacleIndex);
                     this.removeObstacleOutsideBoard(bulletElm, bulletIndex);
                 })
@@ -44,12 +44,12 @@ class Game {
         }, 10);
 
         setInterval(() => {
-            this.obstacleArr.forEach((obstacleElm) => {
-                this.detectCollisionPlayer(obstacleElm);
+            this.obstacleArr.forEach((obstacleElm, obstacleIndex) => {
+                this.detectCollisionPlayer(obstacleElm, obstacleIndex);
             })
-        },500);
+        }, 500);
     };
-    
+
     createEventListeners() {
         // Commands for the player
         document.addEventListener("keydown", (event) => {
@@ -82,10 +82,10 @@ class Game {
             } else if (this.getEnergy >= 100) {
                 location.href = './gamewon.html';
             }
-        }, 1000); 
-    };  
+        }, 1000);
+    };
 
-    detectCollisionPlayer(obstacleElm) {
+    detectCollisionPlayer(obstacleElm, obstacleIndex) {
         if (obstacleElm.positionX < this.player.positionX + this.player.width &&
             obstacleElm.positionX + obstacleElm.width > this.player.positionX &&
             obstacleElm.positionY < this.player.positionY + this.player.height &&
@@ -93,11 +93,15 @@ class Game {
 
             console.log('hidden player!');
 
+            obstacleElm.domElement.remove();
+            this.obstacleArr.splice(obstacleIndex, 1);
             this.getEnergy -= 5;
-            document.getElementById("energy-level").innerText = `Energy Level: ${this.getEnergy}/100`; 
-            
-            // obstacleElm.domElement.remove();
-            // this.obstacleArr.splice(obstacleIndex, 1);
+
+            if (this.getEnergy > 0) {
+                document.getElementById("energy-level").innerText = `Energy Level: ${this.getEnergy}/100`;
+            } else {
+                location.href = './gameover.html';
+            }
         }
     };
 
@@ -108,19 +112,19 @@ class Game {
             obstacleElm.height + obstacleElm.positionY > bulletElm.positionY) {
 
             console.log('hidden obstacle!');
-            
+
             this.getEnergy += 10;
             document.getElementById("energy-level").innerText = `Energy Level: ${this.getEnergy}/100`;
 
             obstacleElm.domElement.remove();
             this.obstacleArr.splice(obstacleIndex, 1);
-            
+
             bulletElm.domElement.remove();
             this.bulletsArr.splice(bulletIndex, 1);
         }
     };
 
-    removeObstacleOutsideBoard (bulletElm, bulletIndex) {
+    removeObstacleOutsideBoard(bulletElm, bulletIndex) {
         if (bulletElm.positionY > 100 - bulletElm.height) {
             bulletElm.domElement.remove();
             this.bulletsArr.splice(bulletIndex, 1);
@@ -134,14 +138,14 @@ class Player {
     constructor() {
         this.width = 6
         this.height = 12;
-        this.positionX = 50 - this.width/2;
+        this.positionX = 50 - this.width / 2;
         this.positionY = 5;
 
         this.domElement = null;
         this.createDomElement();
     }
 
-    createDomElement () {
+    createDomElement() {
         this.domElement = document.createElement("div");
         this.domElement.id = "player";
         this.domElement.style.width = this.width + "vw";
@@ -153,24 +157,24 @@ class Player {
         parentElm.appendChild(this.domElement);
     }
 
-    moveLeft () {
-        this.positionX-=4;
-        this.domElement.style.left = this.positionX +"vw";
+    moveLeft() {
+        this.positionX -= 4;
+        this.domElement.style.left = this.positionX + "vw";
     }
 
-    moveRight () {
-        this.positionX+=4;
-        this.domElement.style.left = this.positionX +"vw";
+    moveRight() {
+        this.positionX += 4;
+        this.domElement.style.left = this.positionX + "vw";
     }
 
-    moveForward () {
-        this.positionY+=4;
-        this.domElement.style.bottom = this.positionY +"vh"
+    moveForward() {
+        this.positionY += 4;
+        this.domElement.style.bottom = this.positionY + "vh"
     }
- 
-    moveBackwards () {
-        this.positionY-=4;
-        this.domElement.style.bottom = this.positionY +"vh"
+
+    moveBackwards() {
+        this.positionY -= 4;
+        this.domElement.style.bottom = this.positionY + "vh"
     }
 }
 
@@ -179,7 +183,7 @@ class Obstacle {
     constructor() {
         this.width = 3.5;
         this.height = 8;
-        this.positionX = 50 - this.width/2;
+        this.positionX = 50 - this.width / 2;
         this.positionY = 80;
 
         this.domElement = null;
@@ -200,26 +204,26 @@ class Obstacle {
         const parentElm = document.getElementById("board");
         parentElm.appendChild(this.domElement);
     }
-    
+
     randomPosition(min, max) {
-        return Math.floor(Math.random() * (max-min)+min); 
+        return Math.floor(Math.random() * (max - min) + min);
     }
 
     appearRandom() {
-        this.positionX = this.randomPosition(10,98)
-        this.positionY = this.randomPosition(10,98)
+        this.positionX = this.randomPosition(10, 98)
+        this.positionY = this.randomPosition(10, 98)
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
     }
 }
 
 class Bullets {
-    constructor (positionX, positionY) { 
+    constructor(positionX, positionY) {
         this.width = 3;
-        this.height = 3 ;
+        this.height = 3;
         this.positionX = positionX;
-        this.positionY = positionY; 
-        
+        this.positionY = positionY;
+
         this.domElement = null;
         this.createDomElement();
     }
@@ -240,10 +244,10 @@ class Bullets {
 
     shootBullet() {
         this.positionY++;
-        this.domElement.style.bottom = this.positionY +"vh";
+        this.domElement.style.bottom = this.positionY + "vh";
     }
 }
- 
+
 
 const letsStartGame = new Game();
 letsStartGame.startGame();
