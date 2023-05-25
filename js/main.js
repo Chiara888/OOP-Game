@@ -92,8 +92,12 @@ class Game {
             obstacleElm.height + obstacleElm.positionY > this.player.positionY) {
 
             console.log('hidden player!');
+
             this.getEnergy -= 5;
-            document.getElementById("energy-level").innerText = `Energy Level: ${this.getEnergy}/100`;
+            document.getElementById("energy-level").innerText = `Energy Level: ${this.getEnergy}/100`; 
+            
+            // obstacleElm.domElement.remove();
+            // this.obstacleArr.splice(obstacleIndex, 1);
         }
     };
 
@@ -150,22 +154,22 @@ class Player {
     }
 
     moveLeft () {
-        this.positionX-=3;
+        this.positionX-=4;
         this.domElement.style.left = this.positionX +"vw";
     }
 
     moveRight () {
-        this.positionX+=3;
+        this.positionX+=4;
         this.domElement.style.left = this.positionX +"vw";
     }
 
     moveForward () {
-        this.positionY+=3;
+        this.positionY+=4;
         this.domElement.style.bottom = this.positionY +"vh"
     }
  
     moveBackwards () {
-        this.positionY-=3;
+        this.positionY-=4;
         this.domElement.style.bottom = this.positionY +"vh"
     }
 }

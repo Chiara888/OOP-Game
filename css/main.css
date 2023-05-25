@@ -32,6 +32,20 @@ p {
     font-weight: bold;
 }
 
+.elf {
+    text-align: center;    
+    background-image: url("../pictures/player-with-lamp.png");
+    height: 60px;  
+    width: 80px;      
+    background-position: center;
+    background-size: cover;
+    animation: playerAnimate 0.3s infinite;
+    font-size: 50px;
+    margin-left: 40%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
 #board { 
     height: 80vh;
     position: relative;
@@ -49,7 +63,7 @@ p {
 
 #player {
     position: absolute;
-    background-image: url("../pictures/player-elf.png");
+    background-image: url("../pictures/player-with-lamp.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -97,9 +111,10 @@ p {
     background-color: blueviolet;
     background-repeat: no-repeat;
     background-size: cover;
-    margin-top: 20px;
-    margin-left: 15%;
-    margin-right: 15%;
+    margin-top: 30px;
+    margin-left: 35%;
+    margin-right: 35%;
+    margin-bottom: 30px;
     text-align: center;
     height: 80vh;
     position: relative;
